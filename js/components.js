@@ -1,11 +1,9 @@
 /* =========================================================
    CARTÓRIO DA MOTA
-   COMPONENTES GLOBAIS DO SITE
+   COMPONENTES UNIVERSAIS
 ========================================================= */
 
-
 document.addEventListener("DOMContentLoaded", () => {
-
 
     /* =====================================================
        LOCALIZA O COMPONENTS.JS
@@ -17,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
             'script[src*="components.js"]'
         );
 
-
     const scriptUrl = scriptAtual
         ? new URL(
             scriptAtual.src,
@@ -27,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "/js/components.js",
             window.location.origin
         );
-
 
     const jsDirectory =
         new URL(".", scriptUrl);
@@ -56,55 +52,56 @@ document.addEventListener("DOMContentLoaded", () => {
             "site-header"
         );
 
-
     if (headerContainer) {
 
         fetch(
             componentPath("header.html")
         )
 
-            .then(response => {
+        .then(response => {
 
-                if (!response.ok) {
+            if (!response.ok) {
 
-                    throw new Error(
-                        "Não foi possível carregar o cabeçalho."
-                    );
-
-                }
-
-                return response.text();
-
-            })
-
-            .then(html => {
-
-                headerContainer.innerHTML =
-                    html;
-
-
-                /* =========================================
-                   INICIALIZA MENU
-                ========================================== */
-
-                iniciarMenu();
-
-            })
-
-            .catch(error => {
-
-                console.error(
-                    "Erro ao carregar o cabeçalho:",
-                    error
+                throw new Error(
+                    "Não foi possível carregar o header."
                 );
 
-            });
+            }
+
+            return response.text();
+
+        })
+
+        .then(html => {
+
+            headerContainer.innerHTML =
+                html;
+
+
+            /* =============================================
+               IMPORTANTE
+               O MENU SÓ EXISTE DEPOIS DO FETCH.
+               POR ISSO INICIAMOS AQUI.
+            ============================================== */
+
+            iniciarMenu();
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "Erro ao carregar o header:",
+                error
+            );
+
+        });
 
     }
 
 
     /* =====================================================
-       BARRA DE AJUDA
+       HELP
     ===================================================== */
 
     const helpContainer =
@@ -112,42 +109,41 @@ document.addEventListener("DOMContentLoaded", () => {
             "site-help"
         );
 
-
     if (helpContainer) {
 
         fetch(
             componentPath("help.html")
         )
 
-            .then(response => {
+        .then(response => {
 
-                if (!response.ok) {
+            if (!response.ok) {
 
-                    throw new Error(
-                        "Não foi possível carregar a barra de ajuda."
-                    );
-
-                }
-
-                return response.text();
-
-            })
-
-            .then(html => {
-
-                helpContainer.innerHTML =
-                    html;
-
-            })
-
-            .catch(error => {
-
-                console.error(
-                    "Erro ao carregar a barra de ajuda:",
-                    error
+                throw new Error(
+                    "Não foi possível carregar a ajuda."
                 );
 
-            });
+            }
+
+            return response.text();
+
+        })
+
+        .then(html => {
+
+            helpContainer.innerHTML =
+                html;
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "Erro ao carregar ajuda:",
+                error
+            );
+
+        });
 
     }
 
@@ -161,62 +157,60 @@ document.addEventListener("DOMContentLoaded", () => {
             "site-footer"
         );
 
-
     if (footerContainer) {
 
         fetch(
             componentPath("footer.html")
         )
 
-            .then(response => {
+        .then(response => {
 
-                if (!response.ok) {
+            if (!response.ok) {
 
-                    throw new Error(
-                        "Não foi possível carregar o rodapé."
-                    );
-
-                }
-
-                return response.text();
-
-            })
-
-            .then(html => {
-
-                footerContainer.innerHTML =
-                    html;
-
-
-                const currentYear =
-                    footerContainer.querySelector(
-                        "#currentYear"
-                    );
-
-
-                if (currentYear) {
-
-                    currentYear.textContent =
-                        new Date().getFullYear();
-
-                }
-
-            })
-
-            .catch(error => {
-
-                console.error(
-                    "Erro ao carregar o rodapé:",
-                    error
+                throw new Error(
+                    "Não foi possível carregar o footer."
                 );
 
-            });
+            }
+
+            return response.text();
+
+        })
+
+        .then(html => {
+
+            footerContainer.innerHTML =
+                html;
+
+
+            const currentYear =
+                footerContainer.querySelector(
+                    "#currentYear"
+                );
+
+            if (currentYear) {
+
+                currentYear.textContent =
+                    new Date().getFullYear();
+
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "Erro ao carregar footer:",
+                error
+            );
+
+        });
 
     }
 
 
     /* =====================================================
-       WHATSAPP FLUTUANTE
+       WHATSAPP
     ===================================================== */
 
     criarWhatsappFlutuante();
@@ -230,22 +224,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function iniciarMenu() {
 
-    const menuToggle =
+    const botao =
         document.getElementById(
             "menuToggle"
         );
 
-
-    const mobileMenu =
+    const menu =
         document.getElementById(
             "mobileMenu"
         );
 
 
-    if (!menuToggle || !mobileMenu) {
+    /* =============================================
+       VERIFICAÇÃO
+    ============================================== */
 
-        console.warn(
-            "Menu mobile não encontrado."
+    if (!botao || !menu) {
+
+        console.error(
+            "ERRO: menuToggle ou mobileMenu não encontrado."
         );
 
         return;
@@ -253,59 +250,50 @@ function iniciarMenu() {
     }
 
 
-    /* =========================================
-       ABRIR / FECHAR
-    ========================================== */
+    console.log(
+        "Menu hamburguer inicializado."
+    );
 
-    menuToggle.addEventListener(
+
+    /* =============================================
+       ABRIR / FECHAR
+    ============================================== */
+
+    botao.addEventListener(
         "click",
-        () => {
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
 
             const aberto =
-                menuToggle.classList.toggle(
+                menu.classList.contains(
                     "active"
                 );
 
 
-            mobileMenu.classList.toggle(
-                "active",
-                aberto
-            );
+            if (aberto) {
 
+                fecharMenu();
 
-            menuToggle.setAttribute(
-                "aria-expanded",
-                aberto
-                    ? "true"
-                    : "false"
-            );
+            } else {
 
+                abrirMenu();
 
-            mobileMenu.setAttribute(
-                "aria-hidden",
-                aberto
-                    ? "false"
-                    : "true"
-            );
-
-
-            menuToggle.setAttribute(
-                "aria-label",
-                aberto
-                    ? "Fechar menu"
-                    : "Abrir menu"
-            );
+            }
 
         }
     );
 
 
-    /* =========================================
-       FECHAR AO CLICAR EM UM LINK
-    ========================================== */
+    /* =============================================
+       LINKS DO MENU
+    ============================================== */
 
     const links =
-        mobileMenu.querySelectorAll(
+        menu.querySelectorAll(
             "a"
         );
 
@@ -316,32 +304,7 @@ function iniciarMenu() {
             "click",
             () => {
 
-                menuToggle.classList.remove(
-                    "active"
-                );
-
-
-                mobileMenu.classList.remove(
-                    "active"
-                );
-
-
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-
-                mobileMenu.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
-
-                menuToggle.setAttribute(
-                    "aria-label",
-                    "Abrir menu"
-                );
+                fecharMenu();
 
             }
         );
@@ -349,93 +312,94 @@ function iniciarMenu() {
     });
 
 
-    /* =========================================
-       FECHAR AO CLICAR FORA
-    ========================================== */
-
-    document.addEventListener(
-        "click",
-        (event) => {
-
-            if (
-                !mobileMenu.contains(
-                    event.target
-                ) &&
-                !menuToggle.contains(
-                    event.target
-                )
-            ) {
-
-                menuToggle.classList.remove(
-                    "active"
-                );
-
-
-                mobileMenu.classList.remove(
-                    "active"
-                );
-
-
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-
-                mobileMenu.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
-            }
-
-        }
-    );
-
-
-    /* =========================================
-       ESC FECHA O MENU
-    ========================================== */
+    /* =============================================
+       ESC
+    ============================================== */
 
     document.addEventListener(
         "keydown",
-        (event) => {
+        event => {
 
             if (
                 event.key === "Escape"
             ) {
 
-                menuToggle.classList.remove(
-                    "active"
-                );
-
-
-                mobileMenu.classList.remove(
-                    "active"
-                );
-
-
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-
-                mobileMenu.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
+                fecharMenu();
 
             }
 
         }
     );
 
+
+    /* =============================================
+       FUNÇÃO ABRIR
+    ============================================== */
+
+    function abrirMenu() {
+
+        menu.classList.add(
+            "active"
+        );
+
+        botao.classList.add(
+            "active"
+        );
+
+        botao.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        botao.setAttribute(
+            "aria-label",
+            "Fechar menu"
+        );
+
+        menu.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+    }
+
+
+    /* =============================================
+       FUNÇÃO FECHAR
+    ============================================== */
+
+    function fecharMenu() {
+
+        menu.classList.remove(
+            "active"
+        );
+
+        botao.classList.remove(
+            "active"
+        );
+
+        botao.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        botao.setAttribute(
+            "aria-label",
+            "Abrir menu"
+        );
+
+        menu.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
+
 }
 
 
 /* =========================================================
-   WHATSAPP FLUTUANTE UNIVERSAL
+   WHATSAPP FLUTUANTE
 ========================================================= */
 
 function criarWhatsappFlutuante() {
@@ -452,7 +416,9 @@ function criarWhatsappFlutuante() {
 
 
     const botao =
-        document.createElement("a");
+        document.createElement(
+            "a"
+        );
 
 
     botao.className =

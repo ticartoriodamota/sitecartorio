@@ -872,3 +872,237 @@
 
     outline-offset: 3px;
 }
+/* =========================================================
+   MENU HAMBÚRGUER
+========================================================= */
+
+.menu-toggle {
+    display: none;
+
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    width: 48px;
+    height: 48px;
+
+    padding: 0;
+
+    border: 1px solid rgba(56, 186, 94, 0.35);
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    cursor: pointer;
+
+    z-index: 10001;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+/* Barrinhas */
+
+.menu-toggle span {
+
+    display: block;
+
+    width: 23px;
+    height: 2px;
+
+    background: #38BA5E;
+
+    border-radius: 10px;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+
+/* =========================================================
+   MENU MOBILE
+========================================================= */
+
+.mobile-menu {
+
+    display: none;
+
+    position: absolute;
+
+    top: 100%;
+    left: 0;
+
+    width: 100%;
+
+    padding: 12px;
+
+    background: #030604;
+
+    border-top: 1px solid rgba(56, 186, 94, 0.25);
+
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.35);
+
+    z-index: 10000;
+}
+
+
+.mobile-menu.active {
+
+    display: block;
+}
+
+
+.mobile-menu-inner {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.mobile-menu a {
+
+    width: 100%;
+
+    min-height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 0 16px;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    border-radius: 10px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.mobile-menu a i {
+
+    width: 22px;
+
+    color: #38BA5E;
+
+    text-align: center;
+}
+
+
+.mobile-menu a:hover {
+
+    background:
+        rgba(56, 186, 94, 0.10);
+
+    color: #38BA5E;
+}
+
+
+/* =========================================================
+   ANIMAÇÃO DO HAMBÚRGUER
+========================================================= */
+
+.menu-toggle.active span:nth-child(1) {
+
+    transform:
+        translateY(7px)
+        rotate(45deg);
+}
+
+
+.menu-toggle.active span:nth-child(2) {
+
+    opacity: 0;
+}
+
+
+.menu-toggle.active span:nth-child(3) {
+
+    transform:
+        translateY(-7px)
+        rotate(-45deg);
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 768px) {
+
+    #site-header > header {
+
+        overflow: visible !important;
+
+    }
+
+
+    #site-header {
+
+        overflow: visible !important;
+
+    }
+
+
+    .menu-toggle {
+
+        display: flex !important;
+
+    }
+
+
+    .mobile-menu {
+
+        top: 100%;
+
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 769px) {
+
+    .mobile-menu {
+
+        display: none !important;
+
+    }
+
+
+    .menu-toggle {
+
+        display: none !important;
+
+    }
+
+}
