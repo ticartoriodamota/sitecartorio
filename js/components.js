@@ -3,36 +3,39 @@
    COMPONENTES GLOBAIS DO SITE
 ========================================================= */
 
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    /*
-     * Descobre automaticamente onde está o components.js.
-     *
-     * Assim o mesmo arquivo funciona:
-     *
-     * /
-     * /paginas/certidoes/
-     * /paginas/documentos/
-     * /paginas/institucional/
-     *
-     * sem precisar ficar trocando ../../
-     */
+
+    /* =====================================================
+       LOCALIZA O COMPONENTS.JS
+    ===================================================== */
 
     const scriptAtual =
         document.currentScript ||
-        document.querySelector('script[src*="components.js"]');
+        document.querySelector(
+            'script[src*="components.js"]'
+        );
+
 
     const scriptUrl = scriptAtual
-        ? new URL(scriptAtual.src, window.location.href)
-        : new URL("/js/components.js", window.location.origin);
+        ? new URL(
+            scriptAtual.src,
+            window.location.href
+        )
+        : new URL(
+            "/js/components.js",
+            window.location.origin
+        );
+
 
     const jsDirectory =
         new URL(".", scriptUrl);
 
 
-    /*
-     * COMPONENTES
-     */
+    /* =====================================================
+       CAMINHO DOS COMPONENTES
+    ===================================================== */
 
     const componentPath = (arquivo) => {
 
@@ -49,11 +52,16 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const headerContainer =
-        document.getElementById("site-header");
+        document.getElementById(
+            "site-header"
+        );
+
 
     if (headerContainer) {
 
-        fetch(componentPath("header.html"))
+        fetch(
+            componentPath("header.html")
+        )
 
             .then(response => {
 
@@ -71,7 +79,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             .then(html => {
 
-                headerContainer.innerHTML = html;
+                headerContainer.innerHTML =
+                    html;
+
+
+                /* =========================================
+                   INICIALIZA MENU
+                ========================================== */
+
+                iniciarMenu();
 
             })
 
@@ -92,11 +108,16 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const helpContainer =
-        document.getElementById("site-help");
+        document.getElementById(
+            "site-help"
+        );
+
 
     if (helpContainer) {
 
-        fetch(componentPath("help.html"))
+        fetch(
+            componentPath("help.html")
+        )
 
             .then(response => {
 
@@ -114,7 +135,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             .then(html => {
 
-                helpContainer.innerHTML = html;
+                helpContainer.innerHTML =
+                    html;
 
             })
 
@@ -135,11 +157,16 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const footerContainer =
-        document.getElementById("site-footer");
+        document.getElementById(
+            "site-footer"
+        );
+
 
     if (footerContainer) {
 
-        fetch(componentPath("footer.html"))
+        fetch(
+            componentPath("footer.html")
+        )
 
             .then(response => {
 
@@ -157,17 +184,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             .then(html => {
 
-                footerContainer.innerHTML = html;
+                footerContainer.innerHTML =
+                    html;
 
-
-                /*
-                 * ANO AUTOMÁTICO
-                 */
 
                 const currentYear =
                     footerContainer.querySelector(
                         "#currentYear"
                     );
+
 
                 if (currentYear) {
 
@@ -200,14 +225,220 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* =========================================================
+   MENU HAMBÚRGUER
+========================================================= */
+
+function iniciarMenu() {
+
+    const menuToggle =
+        document.getElementById(
+            "menuToggle"
+        );
+
+
+    const mobileMenu =
+        document.getElementById(
+            "mobileMenu"
+        );
+
+
+    if (!menuToggle || !mobileMenu) {
+
+        console.warn(
+            "Menu mobile não encontrado."
+        );
+
+        return;
+
+    }
+
+
+    /* =========================================
+       ABRIR / FECHAR
+    ========================================== */
+
+    menuToggle.addEventListener(
+        "click",
+        () => {
+
+            const aberto =
+                menuToggle.classList.toggle(
+                    "active"
+                );
+
+
+            mobileMenu.classList.toggle(
+                "active",
+                aberto
+            );
+
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                aberto
+                    ? "true"
+                    : "false"
+            );
+
+
+            mobileMenu.setAttribute(
+                "aria-hidden",
+                aberto
+                    ? "false"
+                    : "true"
+            );
+
+
+            menuToggle.setAttribute(
+                "aria-label",
+                aberto
+                    ? "Fechar menu"
+                    : "Abrir menu"
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       FECHAR AO CLICAR EM UM LINK
+    ========================================== */
+
+    const links =
+        mobileMenu.querySelectorAll(
+            "a"
+        );
+
+
+    links.forEach(link => {
+
+        link.addEventListener(
+            "click",
+            () => {
+
+                menuToggle.classList.remove(
+                    "active"
+                );
+
+
+                mobileMenu.classList.remove(
+                    "active"
+                );
+
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+
+                mobileMenu.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+
+                menuToggle.setAttribute(
+                    "aria-label",
+                    "Abrir menu"
+                );
+
+            }
+        );
+
+    });
+
+
+    /* =========================================
+       FECHAR AO CLICAR FORA
+    ========================================== */
+
+    document.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                !mobileMenu.contains(
+                    event.target
+                ) &&
+                !menuToggle.contains(
+                    event.target
+                )
+            ) {
+
+                menuToggle.classList.remove(
+                    "active"
+                );
+
+
+                mobileMenu.classList.remove(
+                    "active"
+                );
+
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+
+                mobileMenu.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       ESC FECHA O MENU
+    ========================================== */
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                menuToggle.classList.remove(
+                    "active"
+                );
+
+
+                mobileMenu.classList.remove(
+                    "active"
+                );
+
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+
+                mobileMenu.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
    WHATSAPP FLUTUANTE UNIVERSAL
 ========================================================= */
 
 function criarWhatsappFlutuante() {
-
-    /*
-     * Não cria outro botão se já existir.
-     */
 
     if (
         document.querySelector(
@@ -250,6 +481,8 @@ function criarWhatsappFlutuante() {
         '<i class="fa-brands fa-whatsapp"></i>';
 
 
-    document.body.appendChild(botao);
+    document.body.appendChild(
+        botao
+    );
 
 }
